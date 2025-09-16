@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Reseñas de Clientes</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -295,24 +295,39 @@
                 localStorage.setItem('blacklistedUsers', JSON.stringify(blacklistedUsers));
             }, [blacklistedUsers]);
 
+            const sendReviewToDiscord = async (review) => {
+                const webhookUrl = "https://discord.com/api/webhooks/1417619122895720509/pbmx_gEkFuK5dc07RNXxpJf_j0DgFbhURiBQREKQiR3ZoqjEgmk3T2h0sCqY9KpRljme";
+                const content = `Nueva reseña publicada:\n**Nombre:** ${review.customerName}\n**Calificación:** ${review.rating} estrella${review.rating !== 1 ? 's' : ''}\n**Comentario:** ${review.comment}\n**Fecha:** ${review.date}`;
+                try {
+                    await fetch(webhookUrl, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ content }),
+                    });
+                } catch (error) {
+                    console.error("Error enviando reseña a Discord:", error);
+                }
+            };
+
             const handleSubmit = (e) => {
                 e.preventDefault();
-                if (!newReview.customerName || !newReview.comment) return;
+                if (!newReview.customerName.trim() || !newReview.comment.trim()) return;
 
-                if (blacklistedUsers.includes(newReview.customerName)) {
+                if (blacklistedUsers.includes(newReview.customerName.trim())) {
                     alert('Usuario en lista negra, no puede publicar reseñas.');
                     return;
                 }
 
                 const review = {
                     id: Date.now().toString(),
-                    customerName: newReview.customerName,
+                    customerName: newReview.customerName.trim(),
                     rating: newReview.rating,
-                    comment: newReview.comment,
+                    comment: newReview.comment.trim(),
                     date: new Date().toISOString().split('T')[0],
                 };
 
                 setReviews([review, ...reviews]);
+                sendReviewToDiscord(review);
                 setNewReview({ customerName: '', rating: 5, comment: '' });
             };
 
@@ -399,6 +414,7 @@
                                 value={newReview.customerName}
                                 onChange={handleInputChange}
                                 required
+                                autoComplete="off"
                             />
                         </div>
 
@@ -429,7 +445,7 @@
                         </div>
 
                         <button type="submit"><i className="fas fa-paper-plane"></i> Publicar Reseña</button>
-        </form>
+                    </form>
 
                     <div className="reviews-section">
                         <h2>Reseñas Publicadas <span className="review-count">({visibleReviews.length})</span></h2>
@@ -513,8 +529,4 @@
             );
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<ReviewPage />);
-    </script>
-</body>
-</html>
+        const root = ReactDOM.createRoot(document
