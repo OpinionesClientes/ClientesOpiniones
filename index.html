@@ -9,6 +9,7 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
+        /* Aquí va todo tu CSS tal cual lo tienes */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -17,245 +18,8 @@
             min-height: 100vh;
             color: #333;
         }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            backdrop-filter: blur(10px);
-        }
-        h1 {
-            color: #4a5568;
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2.5em;
-            font-weight: 300;
-        }
-        .form-container {
-            margin-bottom: 40px;
-            padding: 25px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #4a5568;
-            font-size: 14px;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            width: 100%;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        button:active {
-            transform: translateY(0);
-        }
-        .reviews-section h2 {
-            color: #4a5568;
-            margin-bottom: 25px;
-            font-size: 1.8em;
-            font-weight: 300;
-        }
-        .review-count {
-            color: #718096;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .review-card {
-            border: 1px solid #e2e8f0;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            background: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .review-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-        }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .review-author {
-            font-size: 18px;
-            font-weight: 600;
-            color: #4a5568;
-        }
-        .review-date {
-            color: #718096;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .review-rating {
-            margin-bottom: 15px;
-            font-weight: 600;
-            color: #667eea;
-        }
-        .review-comment {
-            color: #4c5561;
-            line-height: 1.6;
-            font-size: 15px;
-        }
-        .no-reviews {
-            text-align: center;
-            color: #a0aec0;
-            font-style: italic;
-            padding: 40px;
-            font-size: 18px;
-        }
-        .stars {
-            color: #fbbf24;
-            font-size: 18px;
-        }
-        .admin-login {
-            margin-bottom: 25px;
-            padding: 20px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            background: #f7fafc;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .admin-login h2 {
-            margin-top: 0;
-            color: #4a5568;
-            font-size: 1.5em;
-            font-weight: 300;
-        }
-        .admin-logout {
-            margin-bottom: 25px;
-            text-align: center;
-        }
-        .admin-controls {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .delete-btn {
-            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
-            width: auto;
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-        .delete-btn:hover {
-            background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%);
-        }
-        .blacklist-btn {
-            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
-            color: white;
-            width: auto;
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-        .blacklist-btn:hover {
-            background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%);
-        }
-        .search-sort {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        .search-input {
-            flex: 1;
-            min-width: 200px;
-        }
-        .sort-select {
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 25px;
-        }
-        .page-btn {
-            padding: 8px 12px;
-            border: 1px solid #e2e8f0;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .page-btn.active {
-            background: #667eea;
-            color: white;
-        }
-        .page-btn:hover {
-            background: #e2e8f0;
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 20px;
-                max-width: 100%;
-            }
-            h1 {
-                font-size: 2em;
-            }
-            .review-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-            .admin-controls {
-                flex-direction: column;
-            }
-            .search-sort {
-                flex-direction: column;
-            }
-            .search-input {
-                min-width: auto;
-            }
-        }
+        /* ... resto del CSS ... */
+        /* (Para no repetir todo, usa el CSS que ya tienes) */
     </style>
 </head>
 <body>
@@ -529,4 +293,9 @@
             );
         }
 
-        const root = ReactDOM.createRoot(document
+        // Aquí está la línea clave para que React renderice el componente:
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ReviewPage />);
+    </script>
+</body>
+</html>
