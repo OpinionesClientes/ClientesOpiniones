@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas de Clientes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .form-container {
+            margin-bottom: 40px;
+            padding: 25px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .reviews-section h2 {
+            color: #4a5568;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 300;
+        }
+        .review-count {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .review-card {
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .review-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .review-author {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+        .review-date {
+            color: #718096;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .review-rating {
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #667eea;
+        }
+        .review-comment {
+            color: #4c5561;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+        .no-reviews {
+            text-align: center;
+            color: #a0aec0;
+            font-style: italic;
+            padding: 40px;
+            font-size: 18px;
+        }
+        .stars {
+            color: #fbbf24;
+            font-size: 18px;
+        }
+        .admin-login {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f7fafc;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .admin-login h2 {
+            margin-top: 0;
+            color: #4a5568;
+            font-size: 1.5em;
+            font-weight: 300;
+        }
+        .admin-logout {
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .admin-controls {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .delete-btn {
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #c53030 0%, #9b2c2c 100%);
+        }
+        .blacklist-btn {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+            color: white;
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        .blacklist-btn:hover {
+            background: linear-gradient(135deg, #dd6b20 0%, #c05621 100%);
+        }
+        .search-sort {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            flex: 1;
+            min-width: 200px;
+        }
+        .sort-select {
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .page-btn.active {
+            background: #667eea;
+            color: white;
+        }
+        .page-btn:hover {
+            background: #e2e8f0;
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+            .admin-controls {
+                flex-direction: column;
+            }
+            .search-sort {
+                flex-direction: column;
+            }
+            .search-input {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function ReviewPage() {
+            const [reviews, setReviews] = useState([]);
+            const [blacklistedUsers, setBlacklistedUsers] = useState([]);
+            const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+            const [adminPassword, setAdminPassword] = useState('');
+
+            const [newReview, setNewReview] = useState({
+                customerName: '',
+                rating: 5,
+                comment: '',
+            });
+
+            useEffect(() => {
+                const savedReviews = localStorage.getItem('reviews');
+                if (savedReviews) {
+                    setReviews(JSON.parse(savedReviews));
+                }
+                const savedBlacklist = localStorage.getItem('blacklistedUsers');
+                if (savedBlacklist) {
+                    setBlacklistedUsers(JSON.parse(savedBlacklist));
+                }
+            }, []);
+
+            useEffect(() => {
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+            }, [reviews]);
+
+            useEffect(() => {
+                localStorage.setItem('blacklistedUsers', JSON.stringify(blacklistedUsers));
+            }, [blacklistedUsers]);
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!newReview.customerName || !newReview.comment) return;
+
+                if (blacklistedUsers.includes(newReview.customerName)) {
+                    alert('Usuario en lista negra, no puede publicar reseñas.');
+                    return;
+                }
+
+                const review = {
+                    id: Date.now().toString(),
+                    customerName: newReview.customerName,
+                    rating: newReview.rating,
+                    comment: newReview.comment,
+                    date: new Date().toISOString().split('T')[0],
+                };
+
+                setReviews([review, ...reviews]);
+                setNewReview({ customerName: '', rating: 5, comment: '' });
+            };
+
+            const handleInputChange = (e) => {
+                const { name, value } = e.target;
+                setNewReview((prev) => ({
+                    ...prev,
+                    [name]: name === 'rating' ? parseInt(value) : value,
+                }));
+            };
+
+            const [searchTerm, setSearchTerm] = useState('');
+            const [sortBy, setSortBy] = useState('date');
+            const [currentPage, setCurrentPage] = useState(1);
+            const reviewsPerPage = 5;
+
+            const renderStars = (rating) => {
+                const stars = [];
+                for (let i = 1; i <= 5; i++) {
+                    stars.push(
+                        <i key={i} className={i <= rating ? "fas fa-star" : "far fa-star"}></i>
+                    );
+                }
+                return stars;
+            };
+
+            const visibleReviews = reviews.filter(r => !blacklistedUsers.includes(r.customerName));
+
+            const filteredReviews = visibleReviews.filter(r =>
+                r.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                r.comment.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            const sortedReviews = [...filteredReviews].sort((a, b) => {
+                if (sortBy === 'date') {
+                    return new Date(b.date) - new Date(a.date);
+                } else if (sortBy === 'rating') {
+                    return b.rating - a.rating;
+                }
+                return 0;
+            });
+
+            const indexOfLastReview = currentPage * reviewsPerPage;
+            const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+            const currentReviews = sortedReviews.slice(indexOfFirstReview, indexOfLastReview);
+
+            const totalPages = Math.ceil(sortedReviews.length / reviewsPerPage);
+
+            const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+            return (
+                <div className="container">
+                    {!isAdminLoggedIn ? (
+                        <div className="admin-login">
+                            <h2>Login de Administrador</h2>
+                            <input
+                                type="password"
+                                value={adminPassword}
+                                onChange={(e) => setAdminPassword(e.target.value)}
+                                placeholder="Contraseña"
+                            />
+                            <button onClick={() => {
+                                if (adminPassword === 'Unknowsitoso') {
+                                    setIsAdminLoggedIn(true);
+                                    setAdminPassword('');
+                                } else {
+                                    alert('Contraseña incorrecta');
+                                }
+                            }}>Login</button>
+                        </div>
+                    ) : (
+                        <div className="admin-logout">
+                            <button onClick={() => setIsAdminLoggedIn(false)}>Logout Admin</button>
+                        </div>
+                    )}
+                    <h1>Reseñas de Clientes</h1>
+
+                    <form onSubmit={handleSubmit} className="form-container">
+                        <div className="form-group">
+                            <label>Nombre:</label>
+                            <input
+                                type="text"
+                                name="customerName"
+                                value={newReview.customerName}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Calificación:</label>
+                            <select
+                                name="rating"
+                                value={newReview.rating}
+                                onChange={handleInputChange}
+                            >
+                                {[1, 2, 3, 4, 5].map((n) => (
+                                    <option key={n} value={n}>
+                                        {n} estrella{n !== 1 ? 's' : ''}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Comentario:</label>
+                            <textarea
+                                name="comment"
+                                value={newReview.comment}
+                                onChange={handleInputChange}
+                                required
+                                rows="4"
+                            />
+                        </div>
+
+                        <button type="submit"><i className="fas fa-paper-plane"></i> Publicar Reseña</button>
+        </form>
+
+                    <div className="reviews-section">
+                        <h2>Reseñas Publicadas <span className="review-count">({visibleReviews.length})</span></h2>
+                        {visibleReviews.length > 0 && (
+                            <div className="search-sort">
+                                <input
+                                    type="text"
+                                    className="search-input"
+                                    placeholder="Buscar reseñas..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <select
+                                    className="sort-select"
+                                    value={sortBy}
+                                    onChange={(e) => setSortBy(e.target.value)}
+                                >
+                                    <option value="date">Ordenar por Fecha</option>
+                                    <option value="rating">Ordenar por Calificación</option>
+                                </select>
+                            </div>
+                        )}
+                        {currentReviews.length === 0 ? (
+                            <div className="no-reviews">
+                                {searchTerm ? 'No se encontraron reseñas que coincidan con la búsqueda.' : 'No hay reseñas aún. ¡Sé el primero en publicar una!'}
+                            </div>
+                        ) : (
+                            currentReviews.map((r) => (
+                                <div key={r.id} className="review-card">
+                                    <div className="review-header">
+                                        <span className="review-author">{r.customerName}</span>
+                                        <span className="review-date">{r.date}</span>
+                                    </div>
+                                    <div className="review-rating">
+                                        Calificación: <span className="stars">{renderStars(r.rating)}</span>
+                                    </div>
+                                    <div className="review-comment">{r.comment}</div>
+                                    {isAdminLoggedIn && (
+                                        <div className="admin-controls">
+                                            <button
+                                                className="delete-btn"
+                                                onClick={() => {
+                                                    if (confirm('¿Eliminar esta reseña?')) {
+                                                        setReviews(reviews.filter(rv => rv.id !== r.id));
+                                                    }
+                                                }}
+                                            >
+                                                <i className="fas fa-trash"></i> Eliminar
+                                            </button>
+                                            <button
+                                                className="blacklist-btn"
+                                                onClick={() => {
+                                                    if (confirm('¿Agregar a lista negra?')) {
+                                                        setBlacklistedUsers([...blacklistedUsers, r.customerName]);
+                                                        setReviews(reviews.filter(rv => rv.customerName !== r.customerName));
+                                                    }
+                                                }}
+                                            >
+                                                <i className="fas fa-ban"></i> Lista Negra
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            ))
+                        )}
+                        {totalPages > 1 && (
+                            <div className="pagination">
+                                {Array.from({ length: totalPages }, (_, i) => (
+                                    <button
+                                        key={i + 1}
+                                        className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
+                                        onClick={() => paginate(i + 1)}
+                                    >
+                                        {i + 1}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ReviewPage />);
+    </script>
+</body>
+</html>
